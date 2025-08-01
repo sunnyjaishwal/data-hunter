@@ -4,7 +4,7 @@ from .models.user import User
 
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ('email', 'user_type', 'is_staff', 'is_active')
+    list_display = ('email', 'user_type', 'is_staff', 'is_active', 'client_id')
     list_filter = ('user_type', 'is_staff', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),

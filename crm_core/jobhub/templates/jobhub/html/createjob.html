@@ -1,0 +1,22 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="id_title">Title:</label>
+    {{ form.title }}
+    <br>
+
+    <label for="id_website">Website:</label>
+    {{ form.website }}
+    <br>
+
+    Client Email:
+    {{ form.client }} 
+    <br>
+
+    <label for="id_job_type">Job Type:</label>
+    {{ form.job_type }}
+    <br>
+    
+    {{ form.status }}  
+
+    <button type="submit">Create Job</button>
+</form>

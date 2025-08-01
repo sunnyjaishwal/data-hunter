@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JobHub Home</title>
+</head>
+<body>
+    <h1>Hii {{ username }}</h1>
+     <form action="{% url 'jobhub:job' %}" method="get">
+        <button type="submit">Create Job</button>
+    </form>
+    
+</body>
+</html>
