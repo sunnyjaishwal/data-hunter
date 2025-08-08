@@ -20,7 +20,10 @@ class Login(View):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('jobhub:home')  
+                if user.user_type == 'client_ops':
+                    return redirect('gatekeeper:OpsDashboard')
+                else: 
+                    return redirect('gatekeeper:AdminDashboard') 
             else:
                 error = "Invalid username or password."
         return render(request, self.template_name, {'form': form, 'error': error})

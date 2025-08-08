@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Admin Dashboard</title>
+</head>
+<body>
+    <h1>Hii {{ username }}</h1>
+    
+        <form action="{% url 'jobhub:job' %}" method="get">
+            <button type="submit">Create Job</button>
+        </form>
+
+        <form action="{% url 'gatekeeper:OpsUser' %}" method="get">
+            <button type="submit">Create Ops User</button>
+        </form>
+   
+</body>
+</html>

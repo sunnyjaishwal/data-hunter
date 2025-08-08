@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 import uuid
+from .company_info import Company
 
 
 class UserManager(BaseUserManager):
@@ -27,16 +28,19 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     USER_TYPES = (
         ('admin', 'Admin'),
         ('operations', 'Operations'),
-        ('client', 'Client'),
+        ('client_admin', 'Client Admin'),
+        ('client_ops' , 'Client Operations'),
     )
-    client_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    client_id = models.ForeignKey(Company, blank=True, null=True, on_delete= models.CASCADE, help_text = 'This tells to which company user is related to')
     email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=255, blank=True)
-    user_type = models.CharField(max_length=20, choices=USER_TYPES, default='client')
+    full_name = models.CharField(max_length=255, blank=True, null=True)
+    user_type = models.CharField(max_length=20, choices=USER_TYPES, default='client_admin')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Required for admin access
 
@@ -49,3 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.email} ({self.user_type})"
+    
+    
+    

@@ -20,7 +20,7 @@ class Job(models.Model):
 
 # Only for 'client' users
 class ClientJobPermission(models.Model):
-    client = models.ForeignKey('gatekeeper.User', on_delete=models.CASCADE, limit_choices_to={'user_type': 'client'})
+    client = models.ForeignKey('gatekeeper.User', on_delete=models.CASCADE, limit_choices_to={'user_type': 'client_admin'})
     allowed_job_type = models.ForeignKey('JobType', on_delete=models.CASCADE)
     
     class Meta:

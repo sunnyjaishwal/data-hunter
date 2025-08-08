@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Create Operation User</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,6 +27,7 @@
             margin-top: 1rem;
             font-weight: bold;
         }
+        input[type="email"],
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -62,25 +63,30 @@
     </style>
 </head>
 <body>
-    <h1>DATA HUNTER</h1>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <div>
-            {{ form.username.label_tag }}
-            {{ form.username }}
-            {{ form.username.errors }}
-        </div>
-        <div>
-            {{ form.password.label_tag }}
+    <div class="form-container">
+        <h2>Create Client Operations User</h2>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+
+            <label for="{{ form.full_name.id_for_label }}">Full Name</label>
+            {{ form.full_name }}
+            {{ form.full_name.errors }}
+
+            <label for="{{ form.password.id_for_label }}">Password</label>
             {{ form.password }}
             {{ form.password.errors }}
-        </div>
-        <button type="submit">Login</button>
-    </form>
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+
+            <label for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
+            {{ form.confirm_password }}
+            {{ form.confirm_password.errors }}
+
+            <button type="submit">Create User</button>
+        </form>
+    </div>
 </body>
 </html>

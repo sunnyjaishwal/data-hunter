@@ -2,9 +2,17 @@ from django.urls import path
 from .views.registration import Registration
 from .views.login import Login
 from .views.change_password import ChangePassword
+from .views.client_ops_user_creation import ClientOpsCreateUser
+from .views.client_ops_dashboard import ClientOpsDashboard
+from .views.client_admin_dashboard import ClientAdminDashboard
+
+app_name = 'gatekeeper'
 
 urlpatterns = [
     path('registration/', Registration.as_view(), name='registration'),
     path('login/', Login.as_view(), name='login'),
-    path('changepassword/', ChangePassword.as_view(), name= 'change password')
+    path('changepassword/', ChangePassword.as_view(), name= 'change password'),
+    path('createopsuser/', ClientOpsCreateUser.as_view(), name = 'OpsUser'),
+    path('clientopsdashboard/' , ClientOpsDashboard.as_view(), name='OpsDashboard'),
+    path('clientadmindashboard/', ClientAdminDashboard.as_view(), name = 'AdminDashboard')
 ]

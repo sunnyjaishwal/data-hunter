@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
 from ..forms import JobCreateForm
-# from jobhub.models import Job, JobType, ClientJobPermission
 from gatekeeper.models.user import User
 
 class Job(View):
@@ -13,6 +12,7 @@ class Job(View):
         client_email = request.user.email
         form = JobCreateForm(client_email=client_email)
         return render(request, self.template_name, {'form': form})
+        
 
     def post(self, request, *args, **kwargs):
         client_email = request.user.email

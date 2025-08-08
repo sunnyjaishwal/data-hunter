@@ -7,7 +7,7 @@ from .models import ClientJobPermission
 class JobTypeAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-from .models import Job
+
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
