@@ -126,3 +126,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'gatekeeper.User'  # Replace with your actual app name
 
+# SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587                   # TLS port
+EMAIL_USE_TLS = True               # Enable TLS encryption
+EMAIL_HOST_USER = 'Your Default Mail ID'
+EMAIL_HOST_PASSWORD = 'Your APP Password'  # <-- Paste app password here
+DEFAULT_FROM_EMAIL = 'Your Default Mail ID'
