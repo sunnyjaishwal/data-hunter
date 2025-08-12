@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gatekeeper',
     'jobhub',
+    'domain',
+    'crawler',
+    'agreement',
 
 ]
 
@@ -131,6 +134,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587                   # TLS port
 EMAIL_USE_TLS = True               # Enable TLS encryption
-EMAIL_HOST_USER = 'Your Default Mail ID'
+EMAIL_HOST_USER = 'mytravelbookings2024@gmail.com'
 EMAIL_HOST_PASSWORD = 'Your APP Password'  # <-- Paste app password here
-DEFAULT_FROM_EMAIL = 'Your Default Mail ID'
+DEFAULT_FROM_EMAIL = 'mytravelbookings2024@gmail.com'

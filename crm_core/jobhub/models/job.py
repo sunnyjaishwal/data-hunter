@@ -13,6 +13,7 @@ class Job(models.Model):
     job_type = models.ForeignKey('JobType', on_delete=models.PROTECT)
     status = models.CharField(max_length=50, default='pending')
     website = models.CharField(max_length=255, null=True, blank=True)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

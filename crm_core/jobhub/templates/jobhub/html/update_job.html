@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Create Job</title>
+    <title>Update Job</title>
     <style>
         /* Base form container */
         form {
@@ -77,27 +76,14 @@
     </style>
 </head>
 <body>
-
+    <h1>Update Job</h1>
     <form method="POST">
         {% csrf_token %}
-        
-        <label for="id_title">Title:</label>
-        {{ form.title }}
-
-        <label for="id_website">Website:</label>
-        {{ form.website }}
-
-        <label for="id_client">Client Email:</label>
-        {{ form.client }}
-
-        <label for="id_job_type">Job Type:</label>
-        {{ form.job_type }}
-        
-        <!-- <label for="id_status">Status:</label> -->
-        {{ form.status }}
-
-        <button type="submit">Create Job</button>
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
     </form>
 
+    <br>
+    <a href="{% url 'jobhub:ListAllJobs' %}">← Back to My Jobs</a>
 </body>
 </html>

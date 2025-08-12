@@ -73,6 +73,10 @@
             <button type="submit">Reset Password</button>
         </form>
 
+        <form action="{% url 'jobhub:ListAllJobs' %}" method="get">
+            <button type="submit">Get All Jobs</button>
+        </form>
+
         <form method="post">
             {% csrf_token %}
             <button type="submit">Log Out</button>
