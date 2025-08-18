@@ -134,6 +134,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587                   # TLS port
 EMAIL_USE_TLS = True               # Enable TLS encryption
-EMAIL_HOST_USER = 'mytravelbookings2024@gmail.com'
+EMAIL_HOST_USER = 'your Email'
 EMAIL_HOST_PASSWORD = 'Your APP Password'  # <-- Paste app password here
-DEFAULT_FROM_EMAIL = 'mytravelbookings2024@gmail.com'
+DEFAULT_FROM_EMAIL = 'your Email'
+
+# Celery settings
+CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+enable_utc = False
+
+
