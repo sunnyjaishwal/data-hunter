@@ -1,5 +1,3 @@
-# jobhub/tasks.py
-
 from celery import shared_task
 from .models.job import Job
 

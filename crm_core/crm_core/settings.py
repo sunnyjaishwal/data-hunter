@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'domain',
     'crawler',
     'agreement',
+    'apiservice',
 
 ]
 
@@ -145,5 +146,21 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 enable_utc = False
+
+#Throttling
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apiservice.authentication.ClientAuthentication',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'apiservice.throttling.UserCrawlerRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '10/minute',
+        'user_crawler': '5/minute',
+    }
+}
+
 
 

@@ -17,13 +17,6 @@ class ClientOpsCreationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Passwords do not match."})
 
         company_info = self.context['company']
-     
-        # try:
-        #     company_instance = ClientAdmin.objects.get(email= admin_user_email)
-        # except Exception as e:
-        #     print("This user doesn't exist in Client Admin Model")
-        # Limit check
-        # getattr(client_admin_instance, 'limit', 10)
         max_ops = company_info.limit
         current_ops = User.objects.filter(client_id=company_info, user_type='client_ops').count()
         if current_ops >= max_ops:

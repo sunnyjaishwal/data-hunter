@@ -3,7 +3,7 @@ from celery import Celery
 from kombu import Exchange, Queue
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crm_core.settings')
-app = Celery('myproject')
+app = Celery('crm_core')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
@@ -31,4 +31,4 @@ def setup_dynamic_queues(sender, **kwargs):
     # Set up the queues for Celery
     sender.conf.task_queues = queues
 
-app.on_after_finalize.connect(setup_dynamic_queues)
+app.on_after_finalize.connect(setup_dynamic_queues) #it confirms that setup_dynamic_queues run after every app and modules gets loaded

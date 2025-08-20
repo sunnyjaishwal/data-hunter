@@ -21,5 +21,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('gatekeeper.urls'), name='user'),
-    path('jobhub/', include('jobhub.urls'), name='job')
+    path('jobhub/', include('jobhub.urls'), name='job'),
+    path('sendRequest/', include('apiservice.urls'), name='api')
 ]
