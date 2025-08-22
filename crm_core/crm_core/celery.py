@@ -7,6 +7,7 @@ app = Celery('crm_core')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
+
 def setup_dynamic_queues(sender, **kwargs):
     from domain.models import Domain
     from crawler.models import Crawler

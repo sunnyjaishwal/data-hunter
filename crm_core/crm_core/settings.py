@@ -128,7 +128,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'gatekeeper.User'  # Replace with your actual app name
+AUTH_USER_MODEL = 'gatekeeper.User'  
 
 # SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -136,12 +136,13 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587                   # TLS port
 EMAIL_USE_TLS = True               # Enable TLS encryption
 EMAIL_HOST_USER = 'your Email'
-EMAIL_HOST_PASSWORD = 'Your APP Password'  # <-- Paste app password here
+EMAIL_HOST_PASSWORD = 'Your APP Password'  
 DEFAULT_FROM_EMAIL = 'your Email'
 
 # Celery settings
 CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_RESULT_EXPIRES = 300
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'

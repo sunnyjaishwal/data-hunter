@@ -1,13 +1,19 @@
 from celery import shared_task
 from .models.request import Request
+from .cache_processor import CrawlerRedisClient
 
 @shared_task
 def process_live_request(req_id):
     print(f"Processing request with ID: {req_id}")
     req= Request.objects.get(request_id=req_id)
     payload = req.parameter
-    print(type(payload))
-    print(payload, "will process crawler api with this payload")
+    crawler_name= req.crawler_name
+    domain_name= req.domain_name
+    response = "Dummy Response"
+    redis_client= CrawlerRedisClient()
+    key = redis_client.build_key(crawler_name, payload, domain_name)
+    redis_client.set_crawler_response(key, response)
+    return response
 
 def send_live_request_to_queue(request_id, crawler):
     print("will now prepare and send meassage to queue ")
