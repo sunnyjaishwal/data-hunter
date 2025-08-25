@@ -16,7 +16,8 @@ class Job(View):
 
     def post(self, request, *args, **kwargs):
         client_email = request.user.email
-        form = JobCreateForm(request.POST, client_email=client_email)
+        domain_id = request.POST.get('domain')
+        form = JobCreateForm(request.POST, client_email=client_email, domain_id = domain_id)
 
         if form.is_valid():
             job = form.save(commit=False)

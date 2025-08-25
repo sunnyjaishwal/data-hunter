@@ -12,9 +12,12 @@ class Job(models.Model):
     client = models.ForeignKey('gatekeeper.User', on_delete=models.CASCADE, related_name='jobs')
     job_type = models.ForeignKey('JobType', on_delete=models.PROTECT)
     status = models.CharField(max_length=50, default='pending')
-    website = models.CharField(max_length=255, null=True, blank=True)
+    domain = models.ForeignKey('domain.Domain', on_delete=models.PROTECT, default=None)
+    crawler = models.ForeignKey('crawler.Crawler', on_delete=models.PROTECT, default=None)
+    schedule_time = models.DateTimeField(default=None)
     is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return f"{self.title} ({self.job_type.name})"
