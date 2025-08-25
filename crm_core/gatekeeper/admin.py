@@ -21,6 +21,14 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
 
+class CompanyAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_by', 'updated_by')  # optional: prevent changes via admin form
+
+    def save_model(self, request, obj, form, change):
+        if not change:  
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Company)
+admin.site.register(Company, CompanyAdmin)

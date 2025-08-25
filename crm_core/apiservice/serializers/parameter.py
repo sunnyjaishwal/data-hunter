@@ -17,16 +17,41 @@ class AirlineParameterSerializer(serializers.Serializer):
     
 
 class HotelParameterSerializer(serializers.Serializer):
+    currency = serializers.CharField()
     hotel_id = serializers.CharField(error_messages={
         'required': 'hotel_id value can not be null', 
         'blank': 'hotel_id value can not be null', 
         'null': 'hotel_id value can not be null'})
-    checkIn_date = serializers.DateField(error_messages={
+    check_in_date = serializers.DateField(error_messages={
         'required': 'checkIn_date value can not be null', 
         'blank': 'checkIn_date value can not be null', 
         'null': 'checkIn_date value can not be null'})
-    number_of_stay = serializers.IntegerField(min_value=1, error_messages={
+    check_out_date = serializers.DateField(error_messages={
+        'required': 'checkout_date value can not be null',
+        'blank': 'numberOfStay value can not be null', 
+        'null': 'numberOfStay value can not be null'})
+    guest_count = serializers.IntegerField(min_value=1, error_messages={
         'required': 'numberOfStay value can not be null', 
         'blank': 'numberOfStay value can not be null', 
         'null': 'numberOfStay value can not be null'})
+    pos = serializers.CharField()
+    
+    def validate_currency(self, value):
+        if value != "USD":
+            raise serializers.ValidationError("currency must be 'USD'")
+        return value
+
+    def validate_pos(self, value):
+        if value != "US":
+            raise serializers.ValidationError("pos must be 'US'")
+        return value
+
+    def validate(self, data):
+        checkin = data.get("checkIn_date")
+        checkout = data.get("checkout_date")
+        if checkin and checkout and checkout <= checkin:
+            raise serializers.ValidationError(
+                "checkout_date must be at least 1 day after checkIn_date"
+            )
+        return data
 

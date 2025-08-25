@@ -22,9 +22,13 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
         fields = '__all__'
-        read_only_field = ('request_id')
+        
 
     def validate(self, data):
+        if data.get("retry_count") != 2:
+            raise serializers.ValidationError(
+                {"retry_count": "retry_count must always be 2"}
+            )
         domain = data.get('domain_name')
         param = data.get('parameter')
         param_serializer_class = PARAMETER_SERIALIZER_MAP.get(domain)

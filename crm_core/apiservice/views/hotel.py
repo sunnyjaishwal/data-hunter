@@ -18,14 +18,16 @@ class Hotel(APIView):
         serializer = RequestSerializer(data=data)
         if serializer.is_valid():
             req = serializer.save()
-            crawler_name = req.crawler_name
+            crawler_name = req.site_name
             parameter = req.parameter
             domain_name= req.domain_name
             self.key = redis_client.build_key(crawler_name, parameter, domain_name)
             cached_response = redis_client.get_crawler_response(self.key)
+            serialized_req = RequestSerializer(req)
             if cached_response:
-                return apiResponse({'requestId': str(req.request_id), 'response': cached_response, 'detail': 'Cached response returned'})
-            send_live_request_to_queue(req.request_id, req.crawler_name)
+                
+                return apiResponse({'request': serialized_req.data, 'response': cached_response, 'detail': 'Cached response returned'})
+            send_live_request_to_queue(req.request_id, req.site_name)
             
             timeout_seconds = 30
             interval = 2
@@ -33,7 +35,7 @@ class Hotel(APIView):
             while elapsed < timeout_seconds:
                 cached_response = redis_client.get_crawler_response(self.key)
                 if cached_response:
-                    return apiResponse({'requestId': str(req.request_id), 'response': cached_response, 'detail': 'Fresh response returned'})
+                    return apiResponse({'request': serialized_req.data , 'response': cached_response, 'detail': 'Fresh response returned'})
                 sleep(interval)
                 elapsed += interval
             

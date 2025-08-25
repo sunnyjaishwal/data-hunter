@@ -7,7 +7,7 @@ def process_live_request(req_id):
     print(f"Processing request with ID: {req_id}")
     req= Request.objects.get(request_id=req_id)
     payload = req.parameter
-    crawler_name= req.crawler_name
+    crawler_name= req.site_name
     domain_name= req.domain_name
     response = "Dummy Response"
     redis_client= CrawlerRedisClient()

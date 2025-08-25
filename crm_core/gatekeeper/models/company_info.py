@@ -12,5 +12,5 @@ class Company(models.Model):
     updated_by = models.ForeignKey('gatekeeper.user', on_delete=models.SET_NULL, blank = True, null=True, related_name= "clientadmins_updated")
     
     def __str__(self):
-        return f"Client- { self.uuid} , limit- {self.limit} "
+        return f"Client- { self.name} , limit- {self.limit} "
     
