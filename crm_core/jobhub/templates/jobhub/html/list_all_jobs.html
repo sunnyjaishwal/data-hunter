@@ -34,7 +34,7 @@
     </style>
 </head>
 <body>
-    <h1>Jobs Created by {{ request.user.email }}</h1>
+    <h1>Jobs Created by {{ request.user.email_id }}</h1>
 
     {% if jobs %}
     <form method="post" action="{% url 'jobhub:DeleteJobs' %}">

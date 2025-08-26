@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-    <h1>Hii {{ username }}</h1>
+    <h1>Hi {{ username }}</h1>
     
         <form action="{% url 'jobhub:job' %}" method="get">
             <button type="submit">Create Job</button>
@@ -69,12 +69,20 @@
             <button type="submit">Create Ops User</button>
         </form>
 
+        <form action="{% url 'gatekeeper:ChangePassword' %}" method="get">
+            <button type="submit">Change Password</button>
+        </form>
+
         <form action="{% url 'gatekeeper:ResetPassword' %}" method="get">
             <button type="submit">Reset Password</button>
         </form>
 
         <form action="{% url 'jobhub:ListAllJobs' %}" method="get">
             <button type="submit">Get All Jobs</button>
+        </form>
+
+        <form action="{%url 'gatekeeper:ListAllOpsUser' %}" method="get">
+            <button type="submit">Get All Ops Users</button>
         </form>
 
         <form method="post">
