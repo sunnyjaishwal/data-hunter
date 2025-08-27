@@ -1,20 +1,18 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from gatekeeper.models.company_info import Company
 
 class ClientAuthentication(BaseAuthentication):
    
 
     def authenticate(self, request):
         
-        email = request.data.get('client_id')
-        if not email:
+        company = request.data.get('client_id')
+        if not company:
             return None 
         try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise AuthenticationFailed('No user with this email found.')
+            customer = Company.objects.get(uuid=company)
+        except customer.DoesNotExist:
+            raise AuthenticationFailed('No customer with this uuid found.')
 
-        return (user, None)  
+        return (customer, None)  

@@ -3,8 +3,7 @@ from rest_framework.response import Response as apiResponse
 from asgiref.sync import sync_to_async
 from ..serializers.request import RequestSerializer
 from ..task import send_live_request_to_queue
-from rest_framework.throttling import UserRateThrottle
-from ..throttling import UserCrawlerRateThrottle
+from ..throttling import UserCrawlerRateThrottle, CustomerRateThrottle
 from ..cache_processor import CrawlerRedisClient 
 from time import sleep
 
@@ -14,7 +13,7 @@ redis_client = CrawlerRedisClient()
 
 class Airline(APIView):
 
-    throttle_classes = [UserRateThrottle, UserCrawlerRateThrottle]
+    throttle_classes = [CustomerRateThrottle, UserCrawlerRateThrottle]
 
     def post(self, request):
         data = request.data.copy()
@@ -34,7 +33,7 @@ class Airline(APIView):
             
             send_live_request_to_queue(req.request_id, req.crawler_name)
             
-            timeout_seconds = 30
+            timeout_seconds = 60
             interval = 2
             elapsed = 0
             while elapsed < timeout_seconds:

@@ -78,7 +78,7 @@
 </head>
 <body>
 
-    <form method="POST">
+    <form method="POST" id="job-form">
         {% csrf_token %}
         
         <label for="id_title">Title:</label>
@@ -96,13 +96,105 @@
         <label for="id_crawler">Crawler</label>
         {{ form.crawler }}
 
-        <label  for="id_schedule_time">Schedule Time</label>
-        {{ form.schedule_time }}
-        <!-- <label for="id_status">Status:</label> -->
-        {{ form.status }}
+        <div id="api-info" style="margin-top:20px; display:none;">
+            <strong>API Endpoint:</strong> <span id="api-endpoint"></span>
+            <pre id="api-body" style="background:#f8f8f8; padding:10px; border-radius:5px;"></pre>
+        </div>
 
-        <button type="submit">Create Job</button>
+        <div id="schedule-fields" style="display:inline;">
+           <div> <label for="id_schedule_time">Schedule Time</label>
+
+            {{ form.schedule_time }}
+            {{ form.status }}</div>
+            <br>
+            <button type="submit">Create Job</button>
+        </div>
     </form>
 
+    <script>
+        const jobTypeField = document.getElementById('id_job_type');
+        const apiInfo = document.getElementById('api-info');
+        const apiEndpoint = document.getElementById('api-endpoint');
+        const apiBody = document.getElementById('api-body');
+        const domainField = document.getElementById('id_domain');
+        const crawlerField = document.getElementById('id_crawler');
+        const scheduleFields = document.getElementById('schedule-fields');
+        const companyUUID = "{{ company_uuid }}";
+        const companyId = "{{ company_id }}";
+
+        function updateVisibility() {
+            console.log('Job Type Value:', jobTypeField.value);
+            if (jobTypeField.value === 'Scheduled') {
+                apiInfo.style.display = 'none';
+                scheduleFields.style.display = '';
+                document.querySelectorAll('#schedule-fields button').forEach(btn => btn.style.display = 'inline-block');
+            } else if (jobTypeField.value === 'Live') {
+                scheduleFields.style.display = 'none';
+                // Hide submit button for live
+                document.querySelectorAll('#schedule-fields button').forEach(btn => btn.style.display = 'none');
+                updateApiInfo();
+            } else {
+                apiInfo.style.display = 'none';
+                scheduleFields.style.display = 'none';
+            }
+        }
+
+        function updateApiInfo() {
+            console.log('updateApiInfo called', jobTypeField.value, domainField.value, crawlerField.value);
+            if (jobTypeField.value !== 'Live') {
+                apiInfo.style.display = 'none';
+                apiSubmit.style.display = '';
+                return;
+            }
+            const domainId = domainField.value;
+            const crawlerId = crawlerField.value;
+            if (!domainId || !crawlerId) {
+                apiInfo.style.display = 'none';
+                return;
+            }
+            fetch(`/jobhub/ajax/get-api-template/?domain_id=${domainId}&crawler_id=${crawlerId}&company_uuid=${companyUUID}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('API Template response:', data);
+                    apiEndpoint.textContent = data.api_endpoint;
+                    apiBody.textContent = JSON.stringify(data.body, null, 4);
+                    apiInfo.style.display = '';
+                    
+                });
+        }
+
+        // Crawler filter logic: update crawlers when domain changes
+    domainField.addEventListener('change', function() {
+        const domainId = domainField.value;
+        if (!domainId) return;
+        fetch(`/jobhub/ajax/get-crawlers-for-domain/?domain_id=${domainId}&company_id=${companyId}`)
+            .then(res => res.json())
+            .then(data => {
+                crawlerField.options.length = 0;
+                data.crawlers.forEach(crawler => {
+                    let opt = document.createElement('option');
+                    opt.value = crawler.id;
+                    opt.text = crawler.name;
+                    crawlerField.add(opt);
+                });
+                // Optionally, trigger other logic if required
+                updateApiInfo();  // If job_type is "Live", re-run API info logic
+            });
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateVisibility();  // Initialize state on page load
+            jobTypeField.addEventListener('change', updateVisibility);
+            domainField.addEventListener('change', function() {
+                updateVisibility();
+                updateApiInfo();
+            });
+            crawlerField.addEventListener('change', function() {
+                updateVisibility();
+                updateApiInfo();
+            });
+        });
+            
+    </script>
 </body>
 </html>

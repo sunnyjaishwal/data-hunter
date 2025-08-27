@@ -2,23 +2,22 @@ from rest_framework import serializers
 from ..models.request import Request 
 from django.contrib.auth import get_user_model
 from .parameter_serializer_mapping import PARAMETER_SERIALIZER_MAP
+from gatekeeper.models.company_info import Company
 
-User = get_user_model()
-
-class EmailToUserPrimaryKeyField(serializers.PrimaryKeyRelatedField):
+class UUIDToCompanyPrimaryKeyField(serializers.PrimaryKeyRelatedField):
     def to_internal_value(self, data):
         # If data looks like email, try to get User by email
-        if isinstance(data, str) and '@' in data:
+        
             try:
-                user = User.objects.get(email=data)
-                return user
-            except User.DoesNotExist:
-                raise serializers.ValidationError(f"User with email '{data}' does not exist.")
+                company = Company.objects.get(uuid=data)
+                return company
+            except company.DoesNotExist:
+                raise serializers.ValidationError(f"Customer with uuid '{data}' does not exist.")
         # Fallback to default behavior (assumes pk)
-        return super().to_internal_value(data)
+        # return super().to_internal_value(data)
     
 class RequestSerializer(serializers.ModelSerializer):
-    client_id = EmailToUserPrimaryKeyField(queryset=User.objects.all())
+    client_id = UUIDToCompanyPrimaryKeyField(queryset=Company.objects.all())
     class Meta:
         model = Request
         fields = '__all__'

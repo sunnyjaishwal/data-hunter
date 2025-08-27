@@ -2,15 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response as apiResponse
 from ..serializers.request import RequestSerializer
 from ..task import send_live_request_to_queue
-from ..throttling import UserCrawlerRateThrottle
-from rest_framework.throttling import UserRateThrottle
+from ..throttling import UserCrawlerRateThrottle, CustomerRateThrottle
 from ..cache_processor import CrawlerRedisClient
 from time import sleep
 redis_client = CrawlerRedisClient()
 
 class Hotel(APIView):
     
-    throttle_classes = [UserRateThrottle, UserCrawlerRateThrottle]
+    throttle_classes = [CustomerRateThrottle, UserCrawlerRateThrottle]
     
     def post(self, request):
         data = request.data.copy()
@@ -25,7 +24,6 @@ class Hotel(APIView):
             cached_response = redis_client.get_crawler_response(self.key)
             serialized_req = RequestSerializer(req)
             if cached_response:
-                
                 return apiResponse({'request': serialized_req.data, 'response': cached_response, 'detail': 'Cached response returned'})
             send_live_request_to_queue(req.request_id, req.site_name)
             

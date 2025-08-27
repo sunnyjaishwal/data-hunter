@@ -154,11 +154,11 @@ REST_FRAMEWORK = {
         'apiservice.authentication.ClientAuthentication',
     ),
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.UserRateThrottle',
+        'apiservice.throttling.CustomerRateThrottle',
         'apiservice.throttling.UserCrawlerRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'user': '10/minute',
+        'customer': '10/minute',
         'user_crawler': '5/minute',
     }
 }

@@ -22,8 +22,8 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 class CompanyAdmin(admin.ModelAdmin):
-    readonly_fields = ('created_by', 'updated_by')  # optional: prevent changes via admin form
-
+    readonly_fields = ('created_by', 'updated_by')
+    list_display = ('name','uuid')
     def save_model(self, request, obj, form, change):
         if not change:  
             obj.created_by = request.user

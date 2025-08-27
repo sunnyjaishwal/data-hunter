@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 
 class AirlineParameterSerializer(serializers.Serializer):
+    curency = serializers.CharField()
     source_iata = serializers.CharField(error_messages={
         'required': 'sourceIata value can not be null', 
         'blank': 'sourceIata value can not be null', 
@@ -14,6 +15,22 @@ class AirlineParameterSerializer(serializers.Serializer):
         'required': 'departuredate value can not be null', 
         'blank': 'departuredate value can not be null', 
         'null': 'departuredate value can not be null'})
+    return_date = serializers.DateField(required=False, allow_null=True)
+    pos = serializers.CharField()
+    num_of_adults = serializers.IntegerField(min_value=1, default=2)
+    num_of_stops = serializers.IntegerField(min_value=0, default=0)
+    is_round_trip = serializers.BooleanField(default=False)
+    
+    def validate_currency(self, value):
+        if value != "USD":
+            raise serializers.ValidationError("currency must be 'USD'")
+        return value
+
+    def validate_pos(self, value):
+        if value != "US":
+            raise serializers.ValidationError("pos must be 'US'")
+        return value
+    
     
 
 class HotelParameterSerializer(serializers.Serializer):
@@ -35,6 +52,8 @@ class HotelParameterSerializer(serializers.Serializer):
         'blank': 'numberOfStay value can not be null', 
         'null': 'numberOfStay value can not be null'})
     pos = serializers.CharField()
+    
+    
     
     def validate_currency(self, value):
         if value != "USD":

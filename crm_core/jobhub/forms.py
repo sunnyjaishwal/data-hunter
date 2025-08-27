@@ -7,7 +7,7 @@ from agreement.models import Agreement
 class JobCreateForm(forms.ModelForm):
     title = forms.CharField(max_length=255, label="Job Title")
     client = forms.CharField()
-    job_type = forms.ModelChoiceField(queryset=JobType.objects.none(),label="Job Type")
+    job_type = forms.ModelChoiceField(queryset=JobType.objects.none(),label="Job Type", to_field_name="name")
     domain = forms.ModelChoiceField(queryset = Domain.objects.none(), label='Domain Name')
     crawler = forms.ModelChoiceField(queryset= Crawler.objects.none(), label='Crawler Name')
     schedule_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), label="Schedule Time")
@@ -44,10 +44,17 @@ class JobCreateForm(forms.ModelForm):
             company = client_user.client_id
             allowed_domains = Agreement.objects.filter(company=company).values_list('allowed_domains', flat=True)
             self.fields['domain'].queryset = Domain.objects.filter(id__in = allowed_domains)
-            allowed_crawlers = Agreement.objects.filter(company=company).values_list('allowed_crawlers', flat=True)
-            self.fields['crawler'].queryset = Crawler.objects.filter(id__in= allowed_crawlers)
+            if domain_id and company:
+                agreements = Agreement.objects.filter(company=company)
+                allowed_crawlers = Crawler.objects.filter(
+                    domain_id=domain_id,
+                    id__in=agreements.values_list('allowed_crawlers', flat=True)
+                )
+                self.fields['crawler'].queryset = allowed_crawlers
             
         else:
             # If no client_email passed, no job types available
             self.fields['job_type'].queryset = JobType.objects.none()
+            self.fields['domain'].queryset = Domain.objects.none()
+            self.fields['crawler'].queryset = Crawler.objects.none()   
 

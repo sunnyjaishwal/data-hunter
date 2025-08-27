@@ -4,7 +4,7 @@ from django.db import models
 class Request(models.Model):
     request_id = models.UUIDField( unique=True)
     report_id = models.UUIDField(default = 0,unique=True)
-    client_id = models.ForeignKey('gatekeeper.User', on_delete=models.CASCADE, related_name='request')
+    client_id = models.ForeignKey('gatekeeper.Company', on_delete=models.CASCADE, related_name='request')
     domain_name = models.CharField(max_length=255)
     site_id = models.IntegerField(null=True, blank=True)
     site_name = models.CharField(max_length=255)
