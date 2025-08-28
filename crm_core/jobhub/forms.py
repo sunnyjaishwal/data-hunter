@@ -1,6 +1,6 @@
 from django import forms
 from gatekeeper.models.user import User
-from .models.job import Job, JobType, ClientJobPermission
+from .models.job import Job, JobType, ClientJobPermission, JobScheduleType, WeeklySchedule, BiWeeklySchedule
 from crawler.models import Crawler
 from domain.models import Domain
 from agreement.models import Agreement
@@ -10,6 +10,11 @@ class JobCreateForm(forms.ModelForm):
     job_type = forms.ModelChoiceField(queryset=JobType.objects.none(),label="Job Type", to_field_name="name")
     domain = forms.ModelChoiceField(queryset = Domain.objects.none(), label='Domain Name')
     crawler = forms.ModelChoiceField(queryset= Crawler.objects.none(), label='Crawler Name')
+    
+    job_schedule_type = forms.ModelChoiceField(queryset=JobScheduleType.objects.all(), required=True, label="Schedule Type")
+    weekly_schedule = forms.ModelChoiceField(queryset=WeeklySchedule.objects.all(), required=False, label="Weekly Day")
+    bi_weekly_schedule = forms.ModelChoiceField(queryset=BiWeeklySchedule.objects.all(), required=False, label="Bi-Weekly Frequency")
+    frequency = forms.IntegerField(min_value=1, initial=1, label="Frequency")
     schedule_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), label="Schedule Time")
     status = forms.CharField(max_length=50, initial='pending', widget=forms.HiddenInput())
     
@@ -51,10 +56,13 @@ class JobCreateForm(forms.ModelForm):
                     id__in=agreements.values_list('allowed_crawlers', flat=True)
                 )
                 self.fields['crawler'].queryset = allowed_crawlers
-            
+           
         else:
             # If no client_email passed, no job types available
             self.fields['job_type'].queryset = JobType.objects.none()
             self.fields['domain'].queryset = Domain.objects.none()
             self.fields['crawler'].queryset = Crawler.objects.none()   
 
+        # Initially hide weekly and bi-weekly fields
+        # self.fields['weekly_schedule'].widget.attrs['style'] = 'display:none;'       
+        # self.fields['bi_weekly_schedule'].widget.attrs['style'] = 'display:none;'

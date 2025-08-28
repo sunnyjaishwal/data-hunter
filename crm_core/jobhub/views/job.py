@@ -7,7 +7,7 @@ from domain.models import Domain
 from crawler.models import Crawler
 from agreement.models import Agreement   
 from .domain_parameter_mapping import DOMAIN_PARAMETER_MAP 
-from gatekeeper.models.company_info import Company
+from ..models.job import WeeklySchedule, BiWeeklySchedule
 
 class Job(View):
 
@@ -95,3 +95,12 @@ def get_api_template(request):
         except Domain.DoesNotExist:
             pass
     return JsonResponse({'api_endpoint': api_endpoint, 'body': body})
+
+
+def get_weekly_schedule(request):
+    days = list(WeeklySchedule.objects.values('id', 'name'))
+    return JsonResponse({'weekly_days': days})
+
+def get_biweekly_schedule(request):
+    freqs = list(BiWeeklySchedule.objects.values('id', 'name'))
+    return JsonResponse({'bi_weekly_freqs': freqs})

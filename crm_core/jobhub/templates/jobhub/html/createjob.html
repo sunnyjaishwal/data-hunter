@@ -102,10 +102,24 @@
         </div>
 
         <div id="schedule-fields" style="display:inline;">
-           <div> <label for="id_schedule_time">Schedule Time</label>
+           
+            <label for="{{ id.job_schedule_type}}">Schedule Type:</label>
+            {{ form.job_schedule_type }}
+            <label for="{{ id.frequency }}">Frequency:</label>
+            {{ form.frequency }}
+            <div id="weekly-schedule-container" style="display:none;">
+                <label for="{{ id.weekly_schedule }}">Weekly Schedule:</label>
+                {{ form.weekly_schedule }}
+            </div>
 
+            <div id="bi-weekly-schedule-container" style="display:none;">
+                <label for="{{ id.bi_weekly_schedule }}">Bi-Weekly Schedule:</label>
+                {{ form.bi_weekly_schedule }}
+            </div>
+            <label for="id_schedule_time">Schedule Time</label>
             {{ form.schedule_time }}
-            {{ form.status }}</div>
+            {{ form.status }}
+          
             <br>
             <button type="submit">Create Job</button>
         </div>
@@ -119,6 +133,9 @@
         const domainField = document.getElementById('id_domain');
         const crawlerField = document.getElementById('id_crawler');
         const scheduleFields = document.getElementById('schedule-fields');
+        const jobScheduleTypeField = document.getElementById('id_job_schedule_type');
+        const weeklyScheduleContainer = document.getElementById('weekly-schedule-container');
+        const biWeeklyScheduleContainer = document.getElementById('bi-weekly-schedule-container');
         const companyUUID = "{{ company_uuid }}";
         const companyId = "{{ company_id }}";
 
@@ -137,7 +154,7 @@
                 apiInfo.style.display = 'none';
                 scheduleFields.style.display = 'none';
             }
-        }
+        }    
 
         function updateApiInfo() {
             console.log('updateApiInfo called', jobTypeField.value, domainField.value, crawlerField.value);
@@ -161,6 +178,27 @@
                     apiInfo.style.display = '';
                     
                 });
+        }
+
+        // Utility: detect Weekly/Bi-Weekly display value (case-insensitive)
+        function getScheduleTypeText() {
+            const selectedOption = jobScheduleTypeField.options[jobScheduleTypeField.selectedIndex];
+            return selectedOption ? selectedOption.text.trim().toLowerCase() : '';
+        }
+
+
+        function updateScheduleSubfieldsVisibility() {
+            const val = getScheduleTypeText();
+            if (val === 'weekly') {
+                weeklyScheduleContainer.style.display = "";
+                biWeeklyScheduleContainer.style.display = "none";
+            } else if (val === 'bi-weekly' || val === 'bi weekly') {
+                weeklyScheduleContainer.style.display = "none";
+                biWeeklyScheduleContainer.style.display = "";
+            } else {
+                weeklyScheduleContainer.style.display = "none";
+                biWeeklyScheduleContainer.style.display = "none";
+            }
         }
 
         // Crawler filter logic: update crawlers when domain changes
@@ -193,6 +231,7 @@
                 updateVisibility();
                 updateApiInfo();
             });
+            jobScheduleTypeField.addEventListener('change', updateScheduleSubfieldsVisibility);
         });
             
     </script>

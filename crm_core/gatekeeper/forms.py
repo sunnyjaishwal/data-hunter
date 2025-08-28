@@ -1,6 +1,7 @@
 from django import forms
 from .models.user import User 
 from django.core.validators import RegexValidator
+from django.contrib.auth.forms import UserChangeForm
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150, required=True, label = 'Username')
@@ -38,3 +39,14 @@ class ClientOpsCreationForm(forms.ModelForm):
         fields = ['email', 'full_name', 'password', 'confirm_password']
 
     
+    
+
+
+class UserAdminForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+        
+   
+
+
