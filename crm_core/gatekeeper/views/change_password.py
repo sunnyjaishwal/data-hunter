@@ -15,6 +15,7 @@ class ChangePassword(View):
     def post(self,request):
         form = ChangePasswordForm(request.POST)
         error= None
+        success= None
         if form.is_valid():
             username = form.cleaned_data['username']
             old_password = form.cleaned_data['old_password']
@@ -26,7 +27,7 @@ class ChangePassword(View):
                 if user is not None:
                     user.set_password(new_password)
                     user.save()
-                    return HttpResponse("Password Changed Successfully")
+                    success = "Password Changed Successfully"
                 else:
                     error = "Invalid Username or Password"
-        return render(request, self.template_name, {'form': form , 'error': error})
+        return render(request, self.template_name, {'form': form , 'error': error, 'success': success})

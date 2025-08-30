@@ -3,6 +3,7 @@ from ..models.request import Request
 from django.contrib.auth import get_user_model
 from .parameter_serializer_mapping import PARAMETER_SERIALIZER_MAP
 from gatekeeper.models.company_info import Company
+from crawler.crawler_cache import get_cached_site_names
 
 class UUIDToCompanyPrimaryKeyField(serializers.PrimaryKeyRelatedField):
     def to_internal_value(self, data):
@@ -36,3 +37,9 @@ class RequestSerializer(serializers.ModelSerializer):
         param_serializer = param_serializer_class(data=param)
         param_serializer.is_valid(raise_exception=True)
         return data
+    
+    def validate_site_name(self, value):
+        all_site_names = get_cached_site_names()
+        if value not in all_site_names:
+            raise serializers.ValidationError("This site_name is not recognized.")
+        return value

@@ -14,6 +14,7 @@ class Job(View):
     template_name = "jobhub/html/createjob.html"  
 
     def get(self, request, *args, **kwargs):
+        print("get has been called")
         client_email = request.user.email
         form = JobCreateForm(client_email=client_email)
         try:
@@ -26,10 +27,13 @@ class Job(View):
         
 
     def post(self, request, *args, **kwargs):
+        print("post has been called")
         client_email = request.user.email
         domain_id = request.POST.get('domain')
+        print("form is being processed")
         form = JobCreateForm(request.POST, client_email=client_email, domain_id=domain_id)
-
+        success = ""
+        error = ""
         if form.is_valid():
             job = form.save(commit=False)
 
@@ -40,10 +44,12 @@ class Job(View):
 
             job.client = client_user
             job.save()
-            return HttpResponse("Job Created Successfully")
+            fresh_form = JobCreateForm(client_email=client_email)
+            success= "Job Created Successfully"
         else:
             print(form.errors)
-            return render(request, self.template_name, {'form': form})
+            error = "Form data is invalid. Please correct the errors and try again."
+        return render(request, self.template_name, {'form': fresh_form, 'success': success, 'error': error})
         
         
 
@@ -97,10 +103,4 @@ def get_api_template(request):
     return JsonResponse({'api_endpoint': api_endpoint, 'body': body})
 
 
-def get_weekly_schedule(request):
-    days = list(WeeklySchedule.objects.values('id', 'name'))
-    return JsonResponse({'weekly_days': days})
 
-def get_biweekly_schedule(request):
-    freqs = list(BiWeeklySchedule.objects.values('id', 'name'))
-    return JsonResponse({'bi_weekly_freqs': freqs})

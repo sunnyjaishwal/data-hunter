@@ -60,6 +60,18 @@
         button:hover {
             background-color: #16325c;
         }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+        }
+        .success-message a {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -88,5 +100,15 @@
             <button type="submit">Create User</button>
         </form>
     </div>
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+    <div class="success-message">
+        <p>{{ success }}</p>
+        <p><a href="{% url 'gatekeeper:AdminDashboard' %}">← Back to Dashboard</a></p>
+    </div>
+    {% endif %}
+
 </body>
 </html>

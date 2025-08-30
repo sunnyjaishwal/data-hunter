@@ -44,8 +44,8 @@
                 <tr>
                     <th>Select</th>
                     <th>Title</th>
-                    <th>Website</th>
-                    <th>Job Type</th>
+                    <th>Site</th>
+                    <th>Job Schedule Type</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th>Edit</th>
@@ -56,8 +56,8 @@
                     <tr>
                         <td><input type="checkbox" name="job_ids" value="{{ job.id}}"></td>
                         <td>{{ job.title }}</td>
-                        <td>{{ job.website }}</td>
-                        <td>{{ job.job_type.name }}</td>
+                        <td>{{ job.crawler.crawler_name }}</td>
+                        <td>{{ job.job_schedule_type.name }}</td>
                         <td>{{ job.status }}</td>
                         <td>{{ job.created_at|date:"Y-m-d H:i" }}</td>
                         <td><a href="{% url 'jobhub:UpdateJob' job.pk %}">Edit</a></td>

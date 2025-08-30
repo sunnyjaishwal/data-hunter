@@ -25,7 +25,8 @@ class Hotel(APIView):
             serialized_req = RequestSerializer(req)
             if cached_response:
                 return apiResponse({'request': serialized_req.data, 'response': cached_response, 'detail': 'Cached response returned'})
-            send_live_request_to_queue(req.request_id, req.site_name)
+            print(serialized_req)
+            send_live_request_to_queue(serialized_req.data, req.site_name)
             
             timeout_seconds = 30
             interval = 2

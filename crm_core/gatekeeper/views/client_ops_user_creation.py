@@ -14,6 +14,8 @@ class ClientOpsCreateUser(View):
     
     def post(self, request):
         form = ClientOpsCreationForm(request.POST)
+        error = None
+        success = None
         print(request.user.email)
         if form.is_valid():
             serializer = ClientOpsCreationSerializer(
@@ -28,6 +30,7 @@ class ClientOpsCreateUser(View):
                     for error in errors:
                         form.add_error(field, error)
                 return render(request, self.template, {'form': form})
-            return HttpResponse('Operation User has been successfully created')  
+            success = "Operation User has been successfully created"
         else:
-            return render(request, self.template, {'form': form})
+            error = "Form Data is not valid"
+        return render(request, self.template, {'form': form, 'success': success, 'error': error})

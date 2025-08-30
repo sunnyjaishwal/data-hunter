@@ -74,6 +74,17 @@
         form button:hover {
             background-color: #3867d6;
         }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+        }
+        .success-message a {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -116,8 +127,14 @@
                 <label for="{{ id.bi_weekly_schedule }}">Bi-Weekly Schedule:</label>
                 {{ form.bi_weekly_schedule }}
             </div>
-            <label for="id_schedule_time">Schedule Time</label>
-            {{ form.schedule_time }}
+            <div id="one-time-schedule-container" style="display:none;">
+                <label for="id_schedule_date_time">Schedule Date Time</label>
+                {{ form.schedule_date_time }}
+            </div>
+            <div id="other-schedule-type-container" style="display:none;">
+                <label for="id_schedule_time">Schedule Time</label>
+                {{ form.schedule_time }}
+            </div>    
             {{ form.status }}
           
             <br>
@@ -136,6 +153,8 @@
         const jobScheduleTypeField = document.getElementById('id_job_schedule_type');
         const weeklyScheduleContainer = document.getElementById('weekly-schedule-container');
         const biWeeklyScheduleContainer = document.getElementById('bi-weekly-schedule-container');
+        const oneTimeScheduleContainer = document.getElementById('one-time-schedule-container');
+        const otherScheduleTypeContainer = document.getElementById('other-schedule-type-container');
         const companyUUID = "{{ company_uuid }}";
         const companyId = "{{ company_id }}";
 
@@ -201,6 +220,21 @@
             }
         }
 
+        function updateScheduleTimeFieldVisibility() {
+            const val = getScheduleTypeText();
+            if (val === 'one-time' || val === 'one time') {
+                oneTimeScheduleContainer.style.display = "";
+                otherScheduleTypeContainer.style.display = "none";
+            } else if (val === 'everyday' || val === 'weekly' || val === 'bi-weekly' || val === 'bi weekly') {
+                oneTimeScheduleContainer.style.display = "none";
+                otherScheduleTypeContainer.style.display = "";
+            } 
+            else {
+                oneTimeScheduleContainer.style.display = "none";
+                otherScheduleTypeContainer.style.display = "none";
+            }
+        }
+
         // Crawler filter logic: update crawlers when domain changes
     domainField.addEventListener('change', function() {
         const domainId = domainField.value;
@@ -231,9 +265,23 @@
                 updateVisibility();
                 updateApiInfo();
             });
-            jobScheduleTypeField.addEventListener('change', updateScheduleSubfieldsVisibility);
+            jobScheduleTypeField.addEventListener('change', function() {
+                updateScheduleSubfieldsVisibility(), 
+                updateScheduleTimeFieldVisibility();
+            });
         });
             
     </script>
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+    <div class="success-message">
+        <p style="color:green;">{{ success }}</p>
+        <p><a href="{% url 'gatekeeper:AdminDashboard' %}">← Back to Dashboard</a></p>
+    {% endif %}
+    </div>
+    </body>
+    </body>
 </body>
 </html>

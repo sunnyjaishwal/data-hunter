@@ -141,7 +141,7 @@ DEFAULT_FROM_EMAIL = 'your Email'
 
 # Celery settings
 CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = None
 CELERY_RESULT_EXPIRES = 300
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -162,6 +162,7 @@ REST_FRAMEWORK = {
         'user_crawler': '5/minute',
     }
 }
+
 
 
 

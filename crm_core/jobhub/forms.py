@@ -15,7 +15,8 @@ class JobCreateForm(forms.ModelForm):
     weekly_schedule = forms.ModelChoiceField(queryset=WeeklySchedule.objects.all(), required=False, label="Weekly Day")
     bi_weekly_schedule = forms.ModelChoiceField(queryset=BiWeeklySchedule.objects.all(), required=False, label="Bi-Weekly Frequency")
     frequency = forms.IntegerField(min_value=1, initial=1, label="Frequency")
-    schedule_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), label="Schedule Time")
+    schedule_date_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), required=False, label="Schedule Date Time")
+    schedule_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), required=False, label="Schedule Time")
     status = forms.CharField(max_length=50, initial='pending', widget=forms.HiddenInput())
     
     class Meta:
@@ -63,6 +64,4 @@ class JobCreateForm(forms.ModelForm):
             self.fields['domain'].queryset = Domain.objects.none()
             self.fields['crawler'].queryset = Crawler.objects.none()   
 
-        # Initially hide weekly and bi-weekly fields
-        # self.fields['weekly_schedule'].widget.attrs['style'] = 'display:none;'       
-        # self.fields['bi_weekly_schedule'].widget.attrs['style'] = 'display:none;'
+        
