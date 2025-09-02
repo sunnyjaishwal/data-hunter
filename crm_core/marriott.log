@@ -119,3 +119,9 @@ AttributeError: 'CrawlerRedisClient' object has no attribute 'get'
 2025-09-01 17:11:11,692 - INFO - D:\data-hunter\crm_core\apiservice\task.py changed, reloading.
 2025-09-01 17:21:53,988 - INFO - D:\data-hunter\crm_core\marriott\marriott\marriott_s.py changed, reloading.
 2025-09-01 17:22:03,647 - INFO - D:\data-hunter\crm_core\marriott\marriott\marriott_s.py changed, reloading.
+2025-09-02 20:58:19,180 - WARNING - Not Found: /favicon.ico
+2025-09-02 21:40:48,233 - INFO - D:\data-hunter\crm_core\apiservice\task.py changed, reloading.
+2025-09-02 21:41:34,264 - INFO - D:\data-hunter\crm_core\apiservice\views\airline.py changed, reloading.
+2025-09-02 21:42:17,519 - INFO - D:\data-hunter\crm_core\apiservice\views\airline.py changed, reloading.
+2025-09-02 21:42:38,227 - INFO - D:\data-hunter\crm_core\apiservice\views\airline.py changed, reloading.
+2025-09-02 21:43:06,903 - INFO - D:\data-hunter\crm_core\apiservice\task.py changed, reloading.
