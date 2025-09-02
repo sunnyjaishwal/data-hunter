@@ -2,19 +2,17 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
-import random
 from django.http import HttpResponse
 from ..forms import VerifyOtpForm, ResetPasswordForm
+import random
 
-# User = get_user_model()
-
-# A simple store for OTP per session. For production use, save OTP in DB or cache with expiry.
-def generate_otp():
-    return str(random.randint(100000, 999999))
 
 class ResetPasswordView(View):
     template_name = 'gatekeeper/html/reset_password.html'
 
+    def generate_otp():
+       return str(random.randint(100000, 999999))
+   
     def get(self, request):
         form = ResetPasswordForm()
         return render(request, self.template_name, {'form': form})
@@ -24,7 +22,7 @@ class ResetPasswordView(View):
         if form.is_valid():
             new_password = form.cleaned_data['new_password']
             # Save new_password and OTP to session
-            otp = generate_otp()
+            otp = self.generate_otp()
             request.session['pending_reset_pwd'] = new_password
             request.session['pending_reset_otp'] = otp
             # Send OTP to user's email

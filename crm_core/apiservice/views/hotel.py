@@ -2,14 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response as apiResponse
 from ..serializers.request import RequestSerializer
 from ..task import send_live_request_to_queue
-from ..throttling import UserCrawlerRateThrottle, CustomerRateThrottle
-from ..cache_processor import CrawlerRedisClient
+from ..throttling import CustomerRateThrottle
+from crm_core.redis.cache_processor import CrawlerRedisClient
 from time import sleep
-redis_client = CrawlerRedisClient()
+redis_client = CrawlerRedisClient(0)
 
 class Hotel(APIView):
     
-    throttle_classes = [CustomerRateThrottle, UserCrawlerRateThrottle]
+    throttle_classes = [CustomerRateThrottle]
     
     def post(self, request):
         data = request.data.copy()
@@ -28,7 +28,7 @@ class Hotel(APIView):
             print(serialized_req)
             send_live_request_to_queue(serialized_req.data, req.site_name)
             
-            timeout_seconds = 30
+            timeout_seconds = 120
             interval = 2
             elapsed = 0
             while elapsed < timeout_seconds:

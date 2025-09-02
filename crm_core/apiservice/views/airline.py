@@ -3,17 +3,17 @@ from rest_framework.response import Response as apiResponse
 from asgiref.sync import sync_to_async
 from ..serializers.request import RequestSerializer
 from ..task import send_live_request_to_queue
-from ..throttling import UserCrawlerRateThrottle, CustomerRateThrottle
-from ..cache_processor import CrawlerRedisClient 
+from ..throttling import CustomerRateThrottle
+from crm_core.redis.cache_processor import CrawlerRedisClient 
 from time import sleep
 
-redis_client = CrawlerRedisClient()
+redis_client = CrawlerRedisClient(0)
 
 
 
 class Airline(APIView):
 
-    throttle_classes = [CustomerRateThrottle, UserCrawlerRateThrottle]
+    throttle_classes = [CustomerRateThrottle]
 
     def post(self, request):
         data = request.data.copy()

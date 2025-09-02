@@ -27,7 +27,11 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-
+    def ops_users_for_client(self, client_id):
+        return self.filter(client_id=client_id, user_type='client_ops').order_by('-created_at')
+    
+    def get_ops_user(self, user_id, client_id):
+        return self.get(id=user_id, client_id=client_id, user_type='client_ops')
 
 
 class User(AbstractBaseUser, PermissionsMixin):

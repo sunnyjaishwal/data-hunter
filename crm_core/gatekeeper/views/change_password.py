@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.views import View
 from ..forms import ChangePasswordForm
-from django.http import HttpResponse
+
 
 class ChangePassword(View):
     

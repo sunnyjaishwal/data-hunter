@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'crawler',
     'agreement',
     'apiservice',
-
+    'marriott',
 ]
 
 MIDDLEWARE = [
@@ -155,11 +155,11 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_CLASSES': [
         'apiservice.throttling.CustomerRateThrottle',
-        'apiservice.throttling.UserCrawlerRateThrottle',
+        # 'apiservice.throttling.UserCrawlerRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
         'customer': '10/minute',
-        'user_crawler': '5/minute',
+        # 'user_crawler': '5/minute',
     }
 }
 

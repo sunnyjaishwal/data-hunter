@@ -15,27 +15,27 @@ class CustomerRateThrottle(SimpleRateThrottle):
             'scope': self.scope,
             'ident': company_uuid
         }
-class UserCrawlerRateThrottle(SimpleRateThrottle):
-    scope = 'user_crawler'
+# class UserCrawlerRateThrottle(SimpleRateThrottle):
+#     scope = 'user_crawler'
 
-    def get_cache_key(self, request, view):
-        company = request.data.get('client_id')
+#     def get_cache_key(self, request, view):
+#         company = request.data.get('client_id')
 
-        if not company:
-            return 'No Customer found' 
+#         if not company:
+#             return 'No Customer found' 
 
-        crawler = None
-        try:
-            crawler = request.data.get('site_name') 
-        except Exception:
-            return "No Crawler found"
+#         crawler = None
+#         try:
+#             crawler = request.data.get('site_name') 
+#         except Exception:
+#             return "No Crawler found"
 
-        if not crawler:
-            return None
+#         if not crawler:
+#             return None
 
-        ident = f"{company}-{crawler}"
+#         ident = f"{company}-{crawler}"
 
-        return self.cache_format % {
-            'scope': self.scope,
-            'ident': ident
-        }
+#         return self.cache_format % {
+#             'scope': self.scope,
+#             'ident': ident
+#         }

@@ -1,8 +1,8 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from ..forms import LoginForm  # adjust the import path as needed
-from django.http import HttpResponse
+from ..forms import LoginForm  
+
 class Login(View):
     
     template_name = "gatekeeper\html\login.html"

@@ -6,27 +6,25 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crm_core.settings')
 django.setup()
 
 
-
-
-
 from crawler.models import Crawler
-import redis
+from crm_core.redis.cache_processor import CrawlerRedisClient
+
+class CrawlerCache:
+    def __init__(self, db_index=1):
+        self.site_names_cache = CrawlerRedisClient(db_index)
+        self.SITE_NAMES_CACHE_KEY = "all_crawler_names"
 
 
-site_names_cache = redis.Redis(host='localhost', port=6379, db=1)
+    def refresh_site_names_cache(self):
+        site_names = list(Crawler.objects.values_list('crawler_name', flat=True))
+        # self.site_names_cache.set(self.SITE_NAMES_CACHE_KEY, "||".join(site_names))  # Store as joined string or use other serialize method
+        self.site_names_cache.set_crawler_name(self.SITE_NAMES_CACHE_KEY, site_names)
+        return site_names
 
-SITE_NAMES_CACHE_KEY = "all_crawler_names"
-
-def refresh_site_names_cache():
-    site_names = list(Crawler.objects.values_list('crawler_name', flat=True))
-    site_names_cache.set(SITE_NAMES_CACHE_KEY, "||".join(site_names))  # Store as joined string or use other serialize method
-    return site_names
-
-def get_cached_site_names():
-    cached = site_names_cache.get(SITE_NAMES_CACHE_KEY)
-    if cached:
-        return cached.decode("utf-8").split("||")
-    else:
-        return refresh_site_names_cache()
+    def get_cached_site_names(self):
+        cached = self.site_names_cache.get_crawler_name(self.SITE_NAMES_CACHE_KEY)
+        if cached:
+            return cached.decode("utf-8").split("||")
+        else:
+            return self.refresh_site_names_cache()
     
-print("Cached site names:", get_cached_site_names())

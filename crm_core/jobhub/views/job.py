@@ -7,7 +7,7 @@ from domain.models import Domain
 from crawler.models import Crawler
 from agreement.models import Agreement   
 from .domain_parameter_mapping import DOMAIN_PARAMETER_MAP 
-from ..models.job import WeeklySchedule, BiWeeklySchedule
+
 
 class Job(View):
 

@@ -8,6 +8,6 @@ from ..models.user import User
 @method_decorator(login_required, name='dispatch')
 class DeleteOpsUser(View):
     def post(self, request, user_id):
-        user = get_object_or_404(User, id=user_id, client_id=request.user.client_id, user_type='client_ops')
+        user = User.objects.get_ops_user(user_id, request.user.client_id)
         user.delete()
         return redirect('gatekeeper:ListAllOpsUser')
