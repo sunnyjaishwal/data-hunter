@@ -17,13 +17,13 @@ class CrawlerRedisClient:
     def set_crawler_response(self, key, response, expiration:int= 300):
         self.client.set(key, json.dumps(response), ex=expiration)
         
-    def set_crawler_name(self, key, response):
-        self.client.set(key, "||".join(response))
+    # def set_crawler_name(self, key, response):
+    #     self.client.set(key, "||".join(response))
         
     def get_crawler_response(self, key):
         value =  self.client.get(key)
         return json.loads(value) if value else None
     
-    def get_crawler_name(self, key):
-        value =  self.client.get(key)
-        return value if value else None
+    # def get_crawler_name(self, key):
+    #     value =  self.client.get(key)
+    #     return value if value else None

@@ -3,7 +3,6 @@ from ..models.request import Request
 from django.contrib.auth import get_user_model
 from .parameter_serializer_mapping import PARAMETER_SERIALIZER_MAP
 from gatekeeper.models.company_info import Company
-from crawler.crawler_cache import CrawlerCache
 from crawler.models import Crawler
 
 class UUIDToCompanyPrimaryKeyField(serializers.PrimaryKeyRelatedField):

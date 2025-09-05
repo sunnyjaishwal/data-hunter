@@ -1,5 +1,8 @@
 Django
 djangorestframework
 python-dotenv
-djangorestframework-simplejwt
+amqp
+redis
 celery
+flower
+pymongo dnspython

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'crawler',
     'agreement',
     'apiservice',
-    'marriott',
+    
 ]
 
 MIDDLEWARE = [
@@ -163,6 +163,61 @@ REST_FRAMEWORK = {
     }
 }
 
+#logger-service
 
 
+import sys
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        }
+        
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'verbose',
+            'level': os.getenv('LOG_LEVEL', 'INFO'),
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'crm_core/app.log',
+            'formatter': 'verbose',
+            'level': 'INFO',
+        },
+        # add cloudwatch, sentry, or other handlers here
+    },
+
+    'loggers': {
+        # Root logger
+        '': {
+            'handlers': ['console', 'file'],
+            'level': os.getenv('LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        # Add your app-specific loggers if needed
+        # 'myapp': {
+        #     'handlers': ['console', 'file'],
+        #     'level': 'DEBUG',
+        #     'propagate': False,
+        # },
+    },
+}
 

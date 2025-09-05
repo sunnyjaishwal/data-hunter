@@ -1,12 +1,14 @@
 from celery import shared_task
 from .crawler_dispatcher import CRAWLER_FETCH_RESPONSE_MAP
 from crm_core.redis.cache_processor import CrawlerRedisClient
+import logging
+logger = logging.getLogger(__name__)
 
 redis_client= CrawlerRedisClient(0)
 
 @shared_task
 def process_live_request(request_data):
-    print(f"Processing request from queue")
+    logger.info(f"Processing request: {request_data.get('request_id')}")
     crawler_name = request_data['site_name']
     parameter = request_data['parameter']
     domain_name = request_data['domain_name']
