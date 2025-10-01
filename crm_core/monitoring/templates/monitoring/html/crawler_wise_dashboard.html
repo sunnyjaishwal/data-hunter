@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>  
+    <title>Crawler Wise View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fafc;
+            padding: 2rem;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 2rem;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #294e87;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f6f8;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fafc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crawler Wise Dashboard</h1>
+        
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">View Stats</button>
+            </form>
+        </div>
+
+        {% if selected_crawler %}
+        <div class="results">
+            <h2>Statistics for {{ selected_crawler }}</h2>
+            <p>Total Requests: {{ request_count }}</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

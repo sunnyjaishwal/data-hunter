@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'crawler',
     'agreement',
     'apiservice',
-    
+    'monitoring',
 ]
 
 MIDDLEWARE = [

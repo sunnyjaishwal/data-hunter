@@ -1,0 +1,90 @@
+<html>
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 2rem;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.4rem;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+
+        form {
+            margin: 10px 0;
+            width: 220px;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        a {
+            color: #294e87;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        button {
+            width: 100%;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #3498db;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive for small screens */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            form {
+                width: 100%;
+            }
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Monitoring Dashboard</h1>        
+    </div>
+    <form action="{% url 'monitoring:CrawlerWiseDashboard' %}" method="get">
+        <button type="submit">Crawler Wise View</button>
+    </form>
+    
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>

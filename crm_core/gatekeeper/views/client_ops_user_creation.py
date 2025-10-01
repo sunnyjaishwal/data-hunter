@@ -16,7 +16,6 @@ class ClientOpsCreateUser(View):
         form = ClientOpsCreationForm(request.POST)
         error = None
         success = None
-        print(request.user.email)
         if form.is_valid():
             serializer = ClientOpsCreationSerializer(
                 data = form.cleaned_data,
